@@ -5,7 +5,7 @@ require(tidyverse)
 require(broom)
 require(ggplot2)
 
-img <- load.image(here("dave.jpg"))
+img <- load.image(here("karsten2.jpeg"))
 str(img)
 
 img_df_long <- as.data.frame(img)
@@ -19,7 +19,7 @@ img_df <- tidyr::pivot_wider(img_df_long,
 dim(img_df)
 img_df[1:5, 1:5]
 img_pca <- img_df %>%
-  dplyr::select(-x, -cc) %>%
+  dplyr::select(-x,) %>%
   prcomp(scale = TRUE, center = TRUE)
 
 summary(img_pca)
@@ -77,8 +77,17 @@ p_out <- p + geom_raster() +
   scale_fill_gradient(low = "black", high = "white") +
   facet_wrap(~ pcs, ncol = 2) + 
   guides(fill = FALSE) + 
-  labs(title = "Recovering Dave \nfrom a Principal Components Analysis of his pixels") + 
-  theme(strip.text = element_text(face = "bold", size = rel(1.2)),
-        plot.title = element_text(size = rel(1.5)))
+  labs(title = "Recovering Karsten from an image compressed\nwith Principal Components Analysis") + 
+  theme(strip.text = element_text(face = "bold", size = rel(1)),
+        plot.title = element_text(size = rel(1))) +
+  xlab("") +
+  ylab("")
+
 
 p_out
+
+ggsave("karstenreconstructed.png", plot = last_plot(), device = NULL, path = NULL,
+       scale = 1, width = 10, height = 20, units = "cm",
+       dpi = 300, limitsize = TRUE)
+
+  
